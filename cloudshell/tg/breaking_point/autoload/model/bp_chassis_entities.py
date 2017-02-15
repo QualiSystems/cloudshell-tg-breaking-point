@@ -1,5 +1,5 @@
-from cloudshell.tg.ixia.breaking_point.autoload.model.autoload_elements import Resource
-from cloudshell.tg.ixia.breaking_point.autoload.model.parent_aware import ParentAware
+from cloudshell.tg.breaking_point.autoload.model.autoload_elements import Resource
+from cloudshell.tg.breaking_point.autoload.model.parent_aware import ParentAware
 
 
 class Chassis(Resource, ParentAware):

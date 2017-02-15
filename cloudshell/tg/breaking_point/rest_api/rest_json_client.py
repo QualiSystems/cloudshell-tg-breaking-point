@@ -1,4 +1,4 @@
-from cloudshell.tg.ixia.breaking_point.rest_api.rest_requests import RestRequests
+from cloudshell.tg.breaking_point.rest_api.rest_requests import RestRequests
 import requests
 
 requests.packages.urllib3.disable_warnings()

@@ -1,9 +1,9 @@
 from cloudshell.shell.core.driver_context import AutoLoadDetails
-from cloudshell.tg.ixia.breaking_point.autoload.info.bp_chassis_info import BPChassisInfo
-from cloudshell.tg.ixia.breaking_point.autoload.info.bp_modules_info import BPModulesInfo
-from cloudshell.tg.ixia.breaking_point.autoload.info.bp_ports_info import BPPortsInfo
-from cloudshell.tg.ixia.breaking_point.rest_actions.autoload_actions import AutoloadActions
-from cloudshell.tg.ixia.breaking_point.rest_api.rest_session_manager import RestSessionManager
+from cloudshell.tg.breaking_point.autoload.info.bp_chassis_info import BPChassisInfo
+from cloudshell.tg.breaking_point.autoload.info.bp_modules_info import BPModulesInfo
+from cloudshell.tg.breaking_point.autoload.info.bp_ports_info import BPPortsInfo
+from cloudshell.tg.breaking_point.rest_actions.autoload_actions import AutoloadActions
+from cloudshell.tg.breaking_point.rest_api.rest_session_manager import RestSessionManager
 
 
 class BPAutoloadFlow(object):

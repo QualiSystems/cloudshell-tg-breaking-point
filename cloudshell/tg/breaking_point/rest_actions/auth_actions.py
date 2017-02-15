@@ -1,4 +1,4 @@
-from cloudshell.tg.ixia.breaking_point.rest_api.rest_json_client import RestJsonClient
+from cloudshell.tg.breaking_point.rest_api.rest_json_client import RestJsonClient
 
 
 class AuthActions(object):

@@ -3,7 +3,7 @@ from cloudshell.tg.breaking_point.autoload.model.parent_aware import ParentAware
 
 
 class Chassis(Resource, ParentAware):
-    MODEL = 'CHASSIS'
+    MODEL = 'Breaking Point Chassis'
     NAME_TEMPLATE = 'Chassis {}'
     PREFIX = 'CH'
 
@@ -29,7 +29,7 @@ class Chassis(Resource, ParentAware):
 
 
 class Module(Resource, ParentAware):
-    MODEL = 'Module'
+    MODEL = 'Generic Traffic Generator Module'
     NAME_TEMPLATE = 'Module {}'
     PREFIX = 'M'
 
@@ -47,7 +47,7 @@ class Module(Resource, ParentAware):
 
 
 class Port(Resource, ParentAware):
-    MODEL = 'Port'
+    MODEL = 'Generic Traffic Generator Port'
     NAME_TEMPLATE = 'Port {}'
     PREFIX = 'P'
 

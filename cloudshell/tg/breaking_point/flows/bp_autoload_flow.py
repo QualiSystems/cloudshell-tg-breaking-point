@@ -40,10 +40,11 @@ class BPAutoloadFlow(object):
                 element.add_parent(self._elements.get(element.parent_id))
 
     def _build_autoload_details(self):
-        resources = self._elements.values()
+        resources = []
         attributes = []
-        for resource in resources:
-            attributes.extend(resource.attributes)
-            if not resource.relative_address:
-                resources.remove(resource)
+        for element in self._elements.values():
+            attributes.extend(element.attributes)
+            if element.relative_address:
+                resources.append(element.autoload_resource())
+
         return AutoLoadDetails(resources, attributes)

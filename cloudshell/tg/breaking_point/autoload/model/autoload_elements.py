@@ -14,7 +14,7 @@ class Attribute(AutoLoadAttribute):
         return self._relative_address.value
 
 
-class Resource(AutoLoadResource, StructureNode):
+class Resource(StructureNode):
     MODEL = 'Generic resource'
     NAME_TEMPLATE = 'Resource {}'
     PREFIX = 'R'
@@ -52,3 +52,6 @@ class Resource(AutoLoadResource, StructureNode):
 
     def _get_attribute(self, name):
         return self._attributes[name].attribute_value
+
+    def autoload_resource(self):
+        return AutoLoadResource(self.model, self.name, self.relative_address, self.unique_identifier)

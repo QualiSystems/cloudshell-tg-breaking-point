@@ -90,7 +90,7 @@ class RelativeAddress(object):
         return local_path
 
     def _build_path(self):
-        if self.parent_resource:
+        if self.parent_resource and self.parent_resource.relative_address:
             value = '{0}/{1}'.format(self.parent_resource.relative_address, self._local_path)
         else:
             value = self._local_path

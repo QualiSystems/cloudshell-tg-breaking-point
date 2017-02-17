@@ -23,7 +23,8 @@ class Resource(StructureNode):
 
     def __init__(self, resource_id, unique_identifier):
         StructureNode.__init__(self, resource_id)
-        self._unique_identifier = unique_identifier
+        if unique_identifier:
+            self._unique_identifier = str(unique_identifier)
         self._attributes = {}
 
     @property
@@ -47,7 +48,7 @@ class Resource(StructureNode):
         return self._unique_identifier
 
     def _add_attribute(self, name, value):
-        attribute = Attribute(self._relative_address, name, value)
+        attribute = Attribute(self._relative_address, name, str(value))
         self._attributes[name] = attribute
 
     def _get_attribute(self, name):

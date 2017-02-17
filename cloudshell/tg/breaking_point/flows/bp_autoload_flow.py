@@ -43,7 +43,7 @@ class BPAutoloadFlow(object):
         resources = []
         attributes = []
         for element in self._elements.values():
-            attributes.extend(element.attributes)
+            attributes.extend(element.autoload_attributes)
             if element.relative_address:
                 resources.append(element.autoload_resource())
 

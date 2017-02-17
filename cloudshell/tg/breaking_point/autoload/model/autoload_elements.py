@@ -3,7 +3,7 @@ from cloudshell.shell.core.driver_context import AutoLoadResource, AutoLoadAttri
 from cloudshell.tg.breaking_point.autoload.model.structure_node import StructureNode
 
 
-class Attribute(AutoLoadAttribute):
+class Attribute(object):
     def __init__(self, relative_address, attribute_name, attribute_value):
         self.attribute_name = attribute_name
         self.attribute_value = attribute_value
@@ -12,6 +12,9 @@ class Attribute(AutoLoadAttribute):
     @property
     def relative_address(self):
         return self._relative_address.value
+
+    def autoload_attribute(self):
+        return AutoLoadAttribute(self._relative_address.value, self.attribute_name, self.attribute_value)
 
 
 class Resource(StructureNode):
@@ -28,8 +31,11 @@ class Resource(StructureNode):
         self._attributes = {}
 
     @property
-    def attributes(self):
-        return self._attributes.values()
+    def autoload_attributes(self):
+        autoload_attributes = []
+        for attribute in self._attributes.values():
+            autoload_attributes.append(attribute.autoload_attribute())
+        return autoload_attributes
 
     @property
     def _prefix(self):

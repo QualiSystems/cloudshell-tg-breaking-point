@@ -81,7 +81,9 @@ class RelativeAddress(object):
 
     @property
     def _local_path(self):
-        if self._path_prefix:
+        if not self._path_id:
+            local_path = None
+        elif self._path_prefix:
             local_path = self._path_prefix + str(self.valid_id)
         else:
             local_path = str(self.valid_id)

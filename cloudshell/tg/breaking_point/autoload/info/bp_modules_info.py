@@ -24,7 +24,7 @@ class BPModulesInfo(object):
         info_dict = self.autoload_actions.get_modules_info()
         for module_id, module_info in info_dict.iteritems():
             unique_id = self.PREFIX + module_id
-            module = Module(module_id, unique_id, parent_id=BPChassisInfo.PREFIX + str(BPChassisInfo.ID))
+            module = Module(module_id, unique_id, parent_id=BPChassisInfo.PREFIX)
             module.device_model = module_info.get('model')
             modules_dict[unique_id] = module
 

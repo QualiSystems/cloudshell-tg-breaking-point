@@ -4,7 +4,6 @@ from cloudshell.tg.breaking_point.rest_actions.autoload_actions import AutoloadA
 
 class BPChassisInfo(object):
     PREFIX = 'CH'
-    ID = 0
 
     def __init__(self, autoload_actions, logger):
         """
@@ -18,6 +17,6 @@ class BPChassisInfo(object):
 
     def collect(self):
         self._logger.debug('Collecting chassis info')
-        unique_id = self.PREFIX + str(self.ID)
-        chassis = Chassis(self.ID, unique_id)
+        unique_id = self.PREFIX
+        chassis = Chassis(None, unique_id)
         return {unique_id: chassis}

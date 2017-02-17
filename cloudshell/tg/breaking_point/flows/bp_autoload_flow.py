@@ -44,4 +44,6 @@ class BPAutoloadFlow(object):
         attributes = []
         for resource in resources:
             attributes.extend(resource.attributes)
+            if not resource.relative_address:
+                resources.remove(resource)
         return AutoLoadDetails(resources, attributes)

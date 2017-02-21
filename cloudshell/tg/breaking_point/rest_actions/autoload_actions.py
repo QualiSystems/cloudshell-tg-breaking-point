@@ -32,12 +32,3 @@ class AutoloadActions(object):
                 result[blade_id] = blade_info
 
         return result
-
-        # def logout(self):
-        #     """
-        #     Logout request
-        #     :return:
-        #     """
-        #     self._logger.debug('Logout request')
-        #     uri = '/api/v1/auth/session'
-        #     self._rest_service.request_delete(uri)

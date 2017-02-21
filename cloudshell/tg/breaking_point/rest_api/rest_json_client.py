@@ -41,8 +41,8 @@ class RestJsonClient(RestRequests):
             raise RestClientException(self.__class__.__name__,
                                       'Request put failed: {0}, {1}'.format(response.status_code, response.reason))
 
-    def request_post(self, uri, data):
-        response = self._session.post(self._build_url(uri), json=data, cookies=self._cookies, verify=False)
+    def request_post(self, uri, data, files=None):
+        response = self._session.post(self._build_url(uri), json=data, files=files, cookies=self._cookies, verify=False)
         if response.status_code in [200, 201]:
             return response.json()
         elif response.status_code in [401]:

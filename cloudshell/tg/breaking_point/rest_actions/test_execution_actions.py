@@ -23,9 +23,32 @@ class TestExecutionActions(object):
         return result
 
     def stop_test(self, test_id):
-        self._logger.debug('Unreserving ports {0} on slot {1}'.format(port_list, slot))
-        uri = '/api/v1/bps/ports/operations/unreserve'
-        json_data = {"slot": slot, "portList": port_list}
+        self._logger.debug('Stop running, testID {}'.format(test_id))
+        uri = '/api/v1/bps/tests/operations/stop'
+        json_data = {"testid": test_id}
         data = self._rest_service.request_post(uri, json_data)
+        result = data
+        return result
+
+    def get_real_time_statistics(self, test_id, stats_group='summary'):
+        self._logger.debug('Get RTS, testID {0}, {1}'.format(test_id, stats_group))
+        uri = '/api/v1/bps/tests/operations/getrts'
+        json_request = {'runid': test_id, 'statsGroup': stats_group}
+        data = self._rest_service.request_post(uri, json_request)
+        result = data
+        return result
+
+    def get_results(self, test_id):
+        self._logger.debug('Stop running, testID {}'.format(test_id))
+        uri = '/api/v1/bps/tests/operations/result'
+        json_request = {'runid': test_id}
+        data = self._rest_service.request_post(uri, json_request)
+        result = data
+        return result
+
+    def running_tests(self):
+        self._logger.debug('Running tests')
+        uri = '/api/v1/bps/tests'
+        data = self._rest_service.request_get(uri)
         result = data
         return result

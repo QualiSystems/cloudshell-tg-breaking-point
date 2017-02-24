@@ -14,7 +14,7 @@ class RestClientException(Exception):
 
 class RestJsonClient(RestRequests):
     def __init__(self, hostname, use_https=True):
-        self._cookies = None
+        # self._cookies = None
         self._hostname = hostname
         self._use_https = use_https
         self._session = requests.Session()
@@ -32,7 +32,7 @@ class RestJsonClient(RestRequests):
         return url
 
     def request_put(self, uri, data):
-        response = self._session.put(self._build_url(uri), data, cookies=self._cookies, verify=False)
+        response = self._session.put(self._build_url(uri), data, verify=False)
         if response.status_code in [200, 201, 204]:
             return response.json()
         elif response.status_code in [401]:
@@ -41,8 +41,18 @@ class RestJsonClient(RestRequests):
             raise RestClientException(self.__class__.__name__,
                                       'Request put failed: {0}, {1}'.format(response.status_code, response.reason))
 
-    def request_post(self, uri, data, files=None):
-        response = self._session.post(self._build_url(uri), json=data, files=files, cookies=self._cookies, verify=False)
+    def request_post(self, uri, data):
+        response = self._session.post(self._build_url(uri), json=data, verify=False)
+        if response.status_code in [200, 201]:
+            return response.json()
+        elif response.status_code in [401]:
+            raise RestClientUnauthorizedException(self.__class__.__name__, 'Incorrect login or password')
+        else:
+            raise RestClientException(self.__class__.__name__,
+                                      'Request post failed: {0}, {1}'.format(response.status_code, response.reason))
+
+    def request_post_files(self, uri, data, files):
+        response = self._session.post(self._build_url(uri), data=data, files=files, verify=False)
         if response.status_code in [200, 201]:
             return response.json()
         elif response.status_code in [401]:
@@ -52,7 +62,7 @@ class RestJsonClient(RestRequests):
                                       'Request post failed: {0}, {1}'.format(response.status_code, response.reason))
 
     def request_get(self, uri):
-        response = self._session.get(self._build_url(uri), cookies=self._cookies, verify=False)
+        response = self._session.get(self._build_url(uri), verify=False)
         if response.status_code in [200]:
             return response.json()
         elif response.status_code in [401]:
@@ -62,7 +72,7 @@ class RestJsonClient(RestRequests):
                                       'Request get failed: {0}, {1}'.format(response.status_code, response.reason))
 
     def request_delete(self, uri):
-        response = self._session.delete(self._build_url(uri), cookies=self._cookies, verify=False)
+        response = self._session.delete(self._build_url(uri), verify=False)
         if response.status_code in [200, 204]:
             return response.content
         elif response.status_code in [401]:

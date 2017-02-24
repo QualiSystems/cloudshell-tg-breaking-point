@@ -13,6 +13,10 @@ class RestRequests(object):
         pass
 
     @abstractmethod
+    def request_post_files(self, uri, data, files):
+        pass
+
+    @abstractmethod
     def request_put(self, uri, data):
         pass
 

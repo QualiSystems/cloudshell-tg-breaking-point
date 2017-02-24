@@ -1,4 +1,5 @@
 from abc import ABCMeta
+from cloudshell.tg.breaking_point.rest_api.rest_session_manager import RestSessionManager
 
 
 class BPFlow(object):

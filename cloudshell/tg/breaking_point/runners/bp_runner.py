@@ -12,6 +12,30 @@ class BPRunner(object):
         self._logger = logger
 
     @property
+    def context(self):
+        return self._context
+
+    @context.setter
+    def context(self, value):
+        self._context = value
+
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, value):
+        self._logger = value
+
+    @property
+    def api(self):
+        return self._api
+
+    @api.setter
+    def api(self, value):
+        self._api = value
+
+    @property
     def _username(self):
         return get_attribute_by_name('User', self._context)
 
@@ -29,5 +53,5 @@ class BPRunner(object):
         return get_resource_address(self._context)
 
     @property
-    def _session_manager(self):
+    def session_manager(self):
         return RestSessionManager(self._resource_address, self._username, self._password, self._logger)

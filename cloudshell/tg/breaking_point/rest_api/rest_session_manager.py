@@ -15,14 +15,6 @@ class RestSessionContextManager(object):
         self.__auth_actions = None
 
     @property
-    def logger(self):
-        return self._logger
-
-    @logger.setter
-    def logger(self, value):
-        self._logger = value
-
-    @property
     def _session(self):
         if not self.__session:
             self.__session = RestJsonClient(self._hostname)
@@ -31,9 +23,9 @@ class RestSessionContextManager(object):
     @property
     def _auth_actions(self):
         if not self.__auth_actions:
-            self.__auth_actions = AuthActions(self._session, self.logger)
+            self.__auth_actions = AuthActions(self._session, self._logger)
         else:
-            self.__auth_actions.logger = self.logger
+            self.__auth_actions.logger = self._logger
         return self.__auth_actions
 
     def __del__(self):
@@ -70,26 +62,9 @@ class RestSessionManager(object):
         self._password = password
         self._logger = logger
 
-    @property
-    def logger(self):
-        return self._logger
-
-    @logger.setter
-    def logger(self, value):
-        self._logger = value
-
-    @property
-    def _session_context_manager(self):
-        """
-        :return:
-         :rtype: RestSessionContextManager
-        """
+    def get_session(self):
         if not self.__session_context_manager:
             self.__session_context_manager = RestSessionContextManager(self._resource_address, self._username,
                                                                        self._password, self._logger)
-        else:
-            self.__session_context_manager.logger = self._logger
         return self.__session_context_manager
 
-    def get_session(self):
-        return self._session_context_manager

@@ -11,10 +11,3 @@ class RestActions(object):
         self._rest_service = rest_service
         self._logger = logger
 
-    @property
-    def logger(self):
-        return self._logger
-
-    @logger.setter
-    def logger(self, value):
-        self._logger = value

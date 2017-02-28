@@ -1,18 +1,8 @@
+from cloudshell.tg.breaking_point.rest_actions.rest_actions import RestActions
 from cloudshell.tg.breaking_point.rest_api.rest_json_client import RestJsonClient, RestClientUnauthorizedException
 
 
-class AuthActions(object):
-    def __init__(self, rest_service, logger):
-        """
-        Reboot actions
-        :param rest_service:
-        :type rest_service: RestJsonClient
-        :param logger:
-        :type logger: Logger
-        :return:
-        """
-        self._rest_service = rest_service
-        self._logger = logger
+class AuthActions(RestActions):
 
     def login(self, username, password):
         """

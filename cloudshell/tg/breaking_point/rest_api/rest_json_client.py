@@ -39,7 +39,7 @@ class RestJsonClient(RestRequests):
             raise RestClientUnauthorizedException(self.__class__.__name__, 'Incorrect login or password')
         else:
             raise RestClientException(self.__class__.__name__,
-                                      'Request put failed: {0}, {1}'.format(response.status_code, response.reason))
+                                      'Request put failed: {0}, {1}'.format(response.status_code, response.text))
 
     def request_post(self, uri, data):
         response = self._session.post(self._build_url(uri), json=data, verify=False)
@@ -49,7 +49,7 @@ class RestJsonClient(RestRequests):
             raise RestClientUnauthorizedException(self.__class__.__name__, 'Incorrect login or password')
         else:
             raise RestClientException(self.__class__.__name__,
-                                      'Request post failed: {0}, {1}'.format(response.status_code, response.reason))
+                                      'Request post failed: {0}, {1}'.format(response.status_code, response.text))
 
     def request_post_files(self, uri, data, files):
         response = self._session.post(self._build_url(uri), data=data, files=files, verify=False)
@@ -59,7 +59,7 @@ class RestJsonClient(RestRequests):
             raise RestClientUnauthorizedException(self.__class__.__name__, 'Incorrect login or password')
         else:
             raise RestClientException(self.__class__.__name__,
-                                      'Request post failed: {0}, {1}'.format(response.status_code, response.reason))
+                                      'Request post failed: {0}, {1}'.format(response.status_code, response.text))
 
     def request_get(self, uri):
         response = self._session.get(self._build_url(uri), verify=False)
@@ -69,7 +69,7 @@ class RestJsonClient(RestRequests):
             raise RestClientUnauthorizedException(self.__class__.__name__, 'Incorrect login or password')
         else:
             raise RestClientException(self.__class__.__name__,
-                                      'Request get failed: {0}, {1}'.format(response.status_code, response.reason))
+                                      'Request get failed: {0}, {1}'.format(response.status_code, response.text))
 
     def request_delete(self, uri):
         response = self._session.delete(self._build_url(uri), verify=False)
@@ -79,4 +79,4 @@ class RestJsonClient(RestRequests):
             raise RestClientUnauthorizedException(self.__class__.__name__, 'Incorrect login or password')
         else:
             raise RestClientException(self.__class__.__name__,
-                                      'Request delete failed: {0}, {1}'.format(response.status_code, response.reason))
+                                      'Request delete failed: {0}, {1}'.format(response.status_code, response.text))

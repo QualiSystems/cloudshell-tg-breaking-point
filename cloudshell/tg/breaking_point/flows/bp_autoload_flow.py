@@ -22,11 +22,11 @@ class BPAutoloadFlow(object):
         with self._session_manager.new_session() as session:
             autoload_actions = AutoloadActions(session, self._logger)
 
-            chassis_info = BPChassisInfo(autoload_actions, self._logger)
-            self._elements.update(chassis_info.collect())
+            # chassis_info = BPChassisInfo(autoload_actions, self._logger)
+            # self._elements.update(chassis_info.collect())
 
-            modules_info = BPModulesInfo(autoload_actions, self._logger)
-            self._elements.update(modules_info.collect())
+            # modules_info = BPModulesInfo(autoload_actions, self._logger)
+            # self._elements.update(modules_info.collect())
 
             ports_info = BPPortsInfo(autoload_actions, self._logger)
             self._elements.update(ports_info.collect())

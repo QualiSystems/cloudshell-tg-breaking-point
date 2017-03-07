@@ -10,6 +10,7 @@ class BPRunner(object):
         self._context = context
         self._api = api
         self._logger = logger
+        self._session_manager = None
 
     @property
     def context(self):
@@ -54,4 +55,7 @@ class BPRunner(object):
 
     @property
     def session_manager(self):
-        return RestSessionManager(self._resource_address, self._username, self._password, self._logger)
+        if not self._session_manager:
+            self._session_manager = RestSessionManager(self._resource_address, self._username, self._password,
+                                                       self._logger)
+        return self._session_manager

@@ -67,4 +67,3 @@ class RestSessionManager(object):
             self.__session_context_manager = RestSessionContextManager(self._resource_address, self._username,
                                                                        self._password, self._logger)
         return self.__session_context_manager
-

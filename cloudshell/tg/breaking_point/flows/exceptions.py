@@ -1,0 +1,2 @@
+class BPFlowException(Exception):
+    pass

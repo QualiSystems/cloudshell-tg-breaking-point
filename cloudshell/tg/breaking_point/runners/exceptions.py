@@ -1,0 +1,2 @@
+class BPRunnerException(Exception):
+    pass

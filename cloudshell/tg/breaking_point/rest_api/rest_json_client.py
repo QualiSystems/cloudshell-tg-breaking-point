@@ -71,6 +71,16 @@ class RestJsonClient(RestRequests):
             raise RestClientException(self.__class__.__name__,
                                       'Request get failed: {0}, {1}'.format(response.status_code, response.text))
 
+    def request_get_files(self, uri):
+        response = self._session.get(self._build_url(uri), verify=False)
+        if response.status_code in [200]:
+            return response
+        elif response.status_code in [401]:
+            raise RestClientUnauthorizedException(self.__class__.__name__, 'Incorrect login or password')
+        else:
+            raise RestClientException(self.__class__.__name__,
+                                      'Request get failed: {0}, {1}'.format(response.status_code, response.text))
+
     def request_delete(self, uri):
         response = self._session.delete(self._build_url(uri), verify=False)
         if response.status_code in [200, 204]:

@@ -31,6 +31,9 @@ class RestJsonClient(RestRequests):
             url = uri
         return url
 
+    def set_session_headers(self, **kwargs):
+        self._session.headers.update(kwargs)
+
     def request_put(self, uri, data):
         response = self._session.put(self._build_url(uri), data, verify=False)
         if response.status_code in [200, 201, 204]:
@@ -52,7 +55,10 @@ class RestJsonClient(RestRequests):
                                       'Request post failed: {0}, {1}'.format(response.status_code, response.text))
 
     def request_post_files(self, uri, data, files):
-        response = self._session.post(self._build_url(uri), data=data, files=files, verify=False)
+        if data:
+            response = self._session.post(self._build_url(uri), data=data, files=files, verify=False)
+        else:
+            response = self._session.post(self._build_url(uri), files=files, verify=False)
         if response.status_code in [200, 201]:
             return response.json()
         elif response.status_code in [401]:

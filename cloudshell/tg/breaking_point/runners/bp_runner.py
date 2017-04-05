@@ -7,34 +7,35 @@ class BPRunner(object):
     __metaclass__ = ABCMeta
 
     def __init__(self, context, logger, api):
-        self._context = context
-        self._api = api
-        self._logger = logger
-        self._session_manager = None
+        self.__context = context
+        self.__api = api
+        self.__logger = logger
+
+        self.__session_manager = None
 
     @property
-    def context(self):
-        return self._context
+    def _context(self):
+        return self.__context
 
-    @context.setter
-    def context(self, value):
-        self._context = value
-
-    @property
-    def logger(self):
-        return self._logger
-
-    @logger.setter
-    def logger(self, value):
-        self._logger = value
+    @_context.setter
+    def _context(self, value):
+        self.__context = value
 
     @property
-    def api(self):
-        return self._api
+    def _logger(self):
+        return self.__logger
 
-    @api.setter
-    def api(self, value):
-        self._api = value
+    @_logger.setter
+    def _logger(self, value):
+        self.__logger = value
+
+    @property
+    def _api(self):
+        return self.__api
+
+    @_api.setter
+    def _api(self, value):
+        self.__api = value
 
     @property
     def _username(self):
@@ -54,8 +55,8 @@ class BPRunner(object):
         return get_resource_address(self._context)
 
     @property
-    def session_manager(self):
-        if not self._session_manager:
-            self._session_manager = RestSessionManager(self._resource_address, self._username, self._password,
-                                                       self._logger)
-        return self._session_manager
+    def _session_manager(self):
+        if not self.__session_manager:
+            self.__session_manager = RestSessionManager(self._resource_address, self._username, self._password,
+                                                        self._logger)
+        return self.__session_manager

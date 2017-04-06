@@ -14,37 +14,37 @@ class BPRunner(object):
         self.__session_manager = None
 
     @property
-    def _context(self):
+    def context(self):
         return self.__context
 
-    @_context.setter
-    def _context(self, value):
+    @context.setter
+    def context(self, value):
         self.__context = value
 
     @property
-    def _logger(self):
+    def logger(self):
         return self.__logger
 
-    @_logger.setter
-    def _logger(self, value):
+    @logger.setter
+    def logger(self, value):
         self.__logger = value
 
     @property
-    def _api(self):
+    def api(self):
         return self.__api
 
-    @_api.setter
-    def _api(self, value):
+    @api.setter
+    def api(self, value):
         self.__api = value
 
     @property
     def _username(self):
-        return get_attribute_by_name('User', self._context)
+        return get_attribute_by_name('User', self.context)
 
     @property
     def _password(self):
-        password = get_attribute_by_name(attribute_name='Password', context=self._context)
-        return self._api.DecryptPassword(password).Value
+        password = get_attribute_by_name(attribute_name='Password', context=self.context)
+        return self.api.DecryptPassword(password).Value
 
     @property
     def _resource_address(self):
@@ -52,11 +52,11 @@ class BPRunner(object):
 
         :return:
         """
-        return get_resource_address(self._context)
+        return get_resource_address(self.context)
 
     @property
     def _session_manager(self):
         if not self.__session_manager:
             self.__session_manager = RestSessionManager(self._resource_address, self._username, self._password,
-                                                        self._logger)
+                                                        self.logger)
         return self.__session_manager

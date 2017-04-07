@@ -9,7 +9,7 @@ class BPAutoloadRunner(BPRunner):
 
     @property
     def _autoload_flow(self):
-        return BPAutoloadFlow(self.session_manager, self._logger)
+        return BPAutoloadFlow(self._session_manager, self.logger)
 
     def discover(self):
         return self._autoload_flow.autoload_details()

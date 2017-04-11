@@ -80,7 +80,11 @@ class RestSessionContextManager(object):
         """
         self.__lock.acquire()
         if not self._auth_actions.logged_in():
-            self._auth_actions.login(self._username, self._password)
+            try:
+                self._auth_actions.login(self._username, self._password)
+            except:
+                self.__lock.release()
+                raise
         return self._session
 
     def __exit__(self, exc_type, exc_val, exc_tb):

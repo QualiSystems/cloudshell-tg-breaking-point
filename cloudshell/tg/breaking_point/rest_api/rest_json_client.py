@@ -4,11 +4,11 @@ import requests
 requests.packages.urllib3.disable_warnings()
 
 
-class RestClientUnauthorizedException(Exception):
+class RestClientException(Exception):
     pass
 
 
-class RestClientException(Exception):
+class RestClientUnauthorizedException(RestClientException):
     pass
 
 

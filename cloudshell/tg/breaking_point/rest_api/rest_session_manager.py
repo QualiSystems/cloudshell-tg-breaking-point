@@ -62,14 +62,13 @@ class RestSessionContextManager(object):
     def _auth_actions(self):
         if not self.__auth_actions:
             self.__auth_actions = AuthActions(self._session, self._logger)
-        else:
-            self.__auth_actions.logger = self._logger
         return self.__auth_actions
 
     def _destroy_session(self):
         if self.__auth_actions:
             self.__auth_actions.logout()
             self.__session = None
+            self.__auth_actions = None
 
     def __del__(self):
         self._destroy_session()

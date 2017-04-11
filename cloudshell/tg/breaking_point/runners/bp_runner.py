@@ -1,6 +1,6 @@
 from abc import ABCMeta
 from cloudshell.shell.core.context_utils import get_attribute_by_name, get_resource_address
-from cloudshell.tg.breaking_point.rest_api.rest_session_manager import RestSessionManager
+from cloudshell.tg.breaking_point.rest_api.rest_session_manager import RestSessionContextManager
 
 
 class BPRunner(object):
@@ -11,7 +11,7 @@ class BPRunner(object):
         self.__api = api
         self.__logger = logger
 
-        self.__session_manager = None
+        self.__session_context_manager = None
 
     @property
     def context(self):
@@ -20,6 +20,9 @@ class BPRunner(object):
     @context.setter
     def context(self, value):
         self.__context = value
+        self._session_context_manager.hostname = self._resource_address
+        self._session_context_manager.username = self._username
+        self._session_context_manager.password = self._password
 
     @property
     def logger(self):
@@ -28,6 +31,7 @@ class BPRunner(object):
     @logger.setter
     def logger(self, value):
         self.__logger = value
+        self._session_context_manager.logger = value
 
     @property
     def api(self):
@@ -55,8 +59,9 @@ class BPRunner(object):
         return get_resource_address(self.context)
 
     @property
-    def _session_manager(self):
-        if not self.__session_manager:
-            self.__session_manager = RestSessionManager(self._resource_address, self._username, self._password,
-                                                        self.logger)
-        return self.__session_manager
+    def _session_context_manager(self):
+        if not self.__session_context_manager:
+            self.__session_context_manager = RestSessionContextManager(self._resource_address, self._username,
+                                                                       self._password,
+                                                                       self.logger)
+        return self.__session_context_manager

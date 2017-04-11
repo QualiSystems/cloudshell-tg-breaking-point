@@ -14,7 +14,6 @@ class RestClientException(Exception):
 
 class RestJsonClient(RestRequests):
     def __init__(self, hostname, use_https=True):
-        # self._cookies = None
         self._hostname = hostname
         self._use_https = use_https
         self._session = requests.Session()

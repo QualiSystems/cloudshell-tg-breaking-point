@@ -18,6 +18,10 @@ class RestJsonClient(RestRequests):
         self._use_https = use_https
         self._session = requests.Session()
 
+    @property
+    def session(self):
+        return self._session
+
     def _build_url(self, uri):
         if self._hostname not in uri:
             if not uri.startswith('/'):

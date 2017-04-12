@@ -31,7 +31,8 @@ class BPRunner(object):
     @logger.setter
     def logger(self, value):
         self.__logger = value
-        self._session_context_manager.logger = value
+        if self.__session_context_manager:
+            self.__session_context_manager.logger = value
 
     @property
     def api(self):

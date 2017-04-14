@@ -6,12 +6,12 @@ from cloudshell.tg.breaking_point.rest_api.rest_session_manager import RestSessi
 class BPRunner(object):
     __metaclass__ = ABCMeta
 
-    def __init__(self, context, logger, api):
+    def __init__(self, context, logger, api, session_context_manager=None):
         self.__context = context
         self.__api = api
         self.__logger = logger
 
-        self.__session_context_manager = None
+        self.__session_context_manager = session_context_manager
 
     @property
     def context(self):
@@ -20,9 +20,10 @@ class BPRunner(object):
     @context.setter
     def context(self, value):
         self.__context = value
-        self._session_context_manager.hostname = self._resource_address
-        self._session_context_manager.username = self._username
-        self._session_context_manager.password = self._password
+        if self.__session_context_manager:
+            self.__session_context_manager.hostname = self._resource_address
+            self.__session_context_manager.username = self._username
+            self.__session_context_manager.password = self._password
 
     @property
     def logger(self):
@@ -48,7 +49,7 @@ class BPRunner(object):
 
     @property
     def _password(self):
-        password = get_attribute_by_name(attribute_name='Password', context=self.context)
+        password = get_attribute_by_name('Password', self.context)
         return self.api.DecryptPassword(password).Value
 
     @property

@@ -20,7 +20,7 @@ class RestSessionContextManager(object):
 
     @hostname.setter
     def hostname(self, value):
-        if self._hostname and self._hostname != value:
+        if self._hostname != value:
             self._destroy_session()
             self._hostname = value
 
@@ -30,7 +30,7 @@ class RestSessionContextManager(object):
 
     @username.setter
     def username(self, value):
-        if self._username and self._username != value:
+        if self._username != value:
             self._destroy_session()
             self._username = value
 
@@ -40,7 +40,7 @@ class RestSessionContextManager(object):
 
     @password.setter
     def password(self, value):
-        if self._password and self._password != value:
+        if self._password != value:
             self._destroy_session()
             self._password = value
 
@@ -81,7 +81,7 @@ class RestSessionContextManager(object):
         self.__lock.acquire()
         if not self._auth_actions.logged_in():
             try:
-                self._auth_actions.login(self._username, self._password)
+                self._auth_actions.login(self.username, self.password)
             except:
                 self.__lock.release()
                 raise

@@ -11,7 +11,7 @@ install:
 
 script:
     - python setup.py install
-    - nosetests --with-coverage --cover-package=cloudshell/tg/breaking_point
+    - nosetests --with-coverage --cover-package=cloudshell/tg/breaking_point --ignore-files='.*bp_exception\.py' --ignore-files='.*exceptions\.py'
 
 after_success:
     - coveralls

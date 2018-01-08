@@ -43,14 +43,19 @@ class BPRunner(object):
     def api(self, value):
         self.__api = value
 
+    def _get_attribute_by_name(self, attribute):
+        full_attribute_name = attribute
+        if self.context.resource.family == 'CS_TrafficGeneratorChassis':
+            full_attribute_name = self.context.resource.model + '.' + full_attribute_name
+        return get_attribute_by_name(full_attribute_name, self.context)
+
     @property
     def _username(self):
-        return get_attribute_by_name('User', self.context)
+        return self._get_attribute_by_name('User')
 
     @property
     def _password(self):
-        password = get_attribute_by_name('Password', self.context)
-        return self.api.DecryptPassword(password).Value
+        return self.api.DecryptPassword(self._get_attribute_by_name('Password')).Value
 
     @property
     def _resource_address(self):

@@ -5,44 +5,23 @@ from cloudshell.tg.breaking_point.rest_api.rest_json_client import RestJsonClien
 
 
 class RestSessionContextManager(object):
-    def __init__(self, hostname, username, password, logger):
+    def __init__(self, session_credentials, logger):
+        """
+
+        :param session_credentials:
+        :type session_credentials: cloudshell.tg.breaking_point.rest_api.rest_session_credentials.RestSessionCredentials
+        :param logger:
+        """
         self.__lock = Lock()
-        self._hostname = hostname
-        self._username = username
-        self._password = password
+        self.__session_credentials = session_credentials
         self._logger = logger
         self.__session = None
         self.__auth_actions = None
 
-    @property
-    def hostname(self):
-        return self._hostname
-
-    @hostname.setter
-    def hostname(self, value):
-        if self._hostname != value:
+    def set_session_credentials(self, session_credentials):
+        if self.__session_credentials != session_credentials:
+            self.__session_credentials = session_credentials
             self._destroy_session()
-            self._hostname = value
-
-    @property
-    def username(self):
-        return self._username
-
-    @username.setter
-    def username(self, value):
-        if self._username != value:
-            self._destroy_session()
-            self._username = value
-
-    @property
-    def password(self):
-        return self._password
-
-    @password.setter
-    def password(self, value):
-        if self._password != value:
-            self._destroy_session()
-            self._password = value
 
     @property
     def logger(self):
@@ -55,7 +34,7 @@ class RestSessionContextManager(object):
     @property
     def _session(self):
         if not self.__session:
-            self.__session = RestJsonClient(self._hostname)
+            self.__session = RestJsonClient(self.__session_credentials.hostname)
         return self.__session
 
     @property
@@ -81,7 +60,7 @@ class RestSessionContextManager(object):
         self.__lock.acquire()
         if not self._auth_actions.logged_in():
             try:
-                self._auth_actions.login(self.username, self.password)
+                self._auth_actions.login(self.__session_credentials.username, self.__session_credentials.password)
             except:
                 self.__lock.release()
                 raise

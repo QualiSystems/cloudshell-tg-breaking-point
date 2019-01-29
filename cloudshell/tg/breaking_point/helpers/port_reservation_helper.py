@@ -1,5 +1,5 @@
 from collections import defaultdict
-from cloudshell.tg.breaking_point.flows.bp_port_reservation_flow import BPPortReservationFlow
+
 from cloudshell.tg.breaking_point.helpers.bp_cs_reservation_details import BPCSReservationDetails
 from cloudshell.tg.breaking_point.utils.file_based_lock import FileBasedLock
 from cloudshell.tg.breaking_point.bp_exception import BPException
@@ -10,36 +10,15 @@ class PortReservationHelper(object):
     GROUP_MAX = 12
     LOCK_FILE = '.port_reservation.lock'
 
-    def __init__(self, session_context_manager, cs_reservation_details, logger):
+    def __init__(self, reservation_flow, cs_reservation_details, logger):
         """
-        :param session_manager:
-        :type
-        :param cs_reservation_details:
+        :type reservation_flow: cloudshell.tg.breaking_point.flows.bp_port_reservation_flow.BPPortReservationFlow
         :type cs_reservation_details: BPCSReservationDetails
-        :param logger:
-        :return:
+        :type logger: logging.Logger
         """
-        self._session_context_manager = session_context_manager
+        self._reservation_flow = reservation_flow
         self._logger = logger
         self._cs_reservation_details = cs_reservation_details
-
-        self.__reservation_flow = None
-        self.__group_id = None
-        self.__reserved_ports = None
-
-    @property
-    def group_id(self):
-        return self.__group_id
-
-    @property
-    def _reservation_flow(self):
-        """
-        :return:
-        :rtype: BPPortReservationFlow
-        """
-        if not self.__reservation_flow:
-            self.__reservation_flow = BPPortReservationFlow(self._session_context_manager, self._logger)
-        return self.__reservation_flow
 
     def _get_groups_info(self):
         """
@@ -103,9 +82,10 @@ class PortReservationHelper(object):
                                   'Cannot find Port with Logical name {} in the reservation'.format(bp_interface))
         return reservation_order
 
-    def reserve_ports(self, network_name, interfaces):
+    def reserve_ports(self, network_name, interfaces, bp_session):
         """
         Reserve ports
+        :type bp_session: cloudshell.tg.breaking_point.entities.bp_session.BPSession
         :param network_name:
         :param interfaces:
         :return:
@@ -115,19 +95,23 @@ class PortReservationHelper(object):
 
         # Unreserve used ports and reserve new port order
         with FileBasedLock(self.LOCK_FILE):
-            self.unreserve_ports()
+            self.unreserve_ports(bp_session)
             used_ports = self._find_used_ports(reservation_order)
             self._reservation_flow.unreserve_ports(used_ports)
-            self.__group_id = self._find_not_used_group_id()
-            self._reservation_flow.reserve_ports(self.__group_id, reservation_order)
-            self.__reserved_ports = reservation_order
+            group_id = self._find_not_used_group_id()
+            self._reservation_flow.reserve_ports(group_id, reservation_order)
+            bp_session.reservation_group = group_id
+            bp_session.reserved_ports = reservation_order
+            return bp_session
 
-    def unreserve_ports(self):
+    def unreserve_ports(self, bp_session):
         """
         Unreserve ports
-        :return:
+        :type bp_session: cloudshell.tg.breaking_point.entities.bp_session.BPSession
+
         """
-        self.__group_id = None
-        if self.__reserved_ports:
-            self._reservation_flow.unreserve_ports(self.__reserved_ports)
-            self.__reserved_ports = None
+        bp_session.reservation_group = None
+        if bp_session.reserved_ports:
+            self._reservation_flow.unreserve_ports(bp_session.reserved_ports)
+            bp_session.reserved_ports = None
+        return bp_session

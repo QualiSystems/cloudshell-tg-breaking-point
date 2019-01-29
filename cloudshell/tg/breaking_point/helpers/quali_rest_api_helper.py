@@ -1,28 +1,6 @@
 from cloudshell.tg.breaking_point.rest_api.rest_json_client import RestJsonClient
 
 
-def create_quali_api_instance(context, logger):
-    """
-    Get needed attributes from context and create instance of QualiApiHelper
-    :param context: 
-    :param logger: 
-    :return: 
-    """
-    if hasattr(context, 'reservation') and context.reservation:
-        domain = context.reservation.domain
-    elif hasattr(context, 'remote_reservation') and context.remote_reservation:
-        domain = context.remote_reservation.domain
-    else:
-        domain = None
-    address = context.connectivity.server_address
-    token = context.connectivity.admin_auth_token
-    if token:
-        instance = QualiAPIHelper(address, logger, token=token, domain=domain)
-    else:
-        instance = QualiAPIHelper(address, logger, username='admin', password='admin', domain=domain)
-    return instance
-
-
 class QualiAPIHelper(object):
     def __init__(self, server_name, logger, username=None, password=None, token=None, domain=None):
         self._server_name = server_name
@@ -75,3 +53,25 @@ class QualiAPIHelper(object):
                               "FileName": file_name
                               }
             self.__rest_client.request_post('API/Package/DeleteFileFromReservation', data=file_to_delete) or []
+
+    @classmethod
+    def from_context(cls, context, logger):
+        """
+        Get needed attributes from context and create instance of QualiApiHelper
+        :param context:
+        :param logger:
+        :return:
+        """
+        if hasattr(context, 'reservation') and context.reservation:
+            domain = context.reservation.domain
+        elif hasattr(context, 'remote_reservation') and context.remote_reservation:
+            domain = context.remote_reservation.domain
+        else:
+            domain = None
+        address = context.connectivity.server_address
+        token = context.connectivity.admin_auth_token
+        if token:
+            instance = cls(address, logger, token=token, domain=domain)
+        else:
+            instance = cls(address, logger, username='admin', password='admin', domain=domain)
+        return instance

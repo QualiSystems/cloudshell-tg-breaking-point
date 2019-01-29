@@ -15,42 +15,12 @@ class RestSessionContextManager(object):
         self.__auth_actions = None
 
     @property
-    def hostname(self):
-        return self._hostname
-
-    @hostname.setter
-    def hostname(self, value):
-        if self._hostname != value:
-            self._destroy_session()
-            self._hostname = value
-
-    @property
-    def username(self):
-        return self._username
-
-    @username.setter
-    def username(self, value):
-        if self._username != value:
-            self._destroy_session()
-            self._username = value
-
-    @property
-    def password(self):
-        return self._password
-
-    @password.setter
-    def password(self, value):
-        if self._password != value:
-            self._destroy_session()
-            self._password = value
-
-    @property
     def logger(self):
         return self._logger
 
     @logger.setter
-    def logger(self, logger):
-        self._logger = logger
+    def logger(self, value):
+        self._logger = value
 
     @property
     def _session(self):
@@ -81,7 +51,7 @@ class RestSessionContextManager(object):
         self.__lock.acquire()
         if not self._auth_actions.logged_in():
             try:
-                self._auth_actions.login(self.username, self.password)
+                self._auth_actions.login(self._username, self._password)
             except:
                 self.__lock.release()
                 raise
@@ -89,3 +59,10 @@ class RestSessionContextManager(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.__lock.release()
+
+    def __eq__(self, other):
+        """
+        :param RestSessionContextManager other:
+        :rtype: bool
+        """
+        return self._hostname == other._hostname and self._username == other._username and self._password == other._password

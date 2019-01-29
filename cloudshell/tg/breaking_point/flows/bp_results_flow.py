@@ -3,8 +3,6 @@ from cloudshell.tg.breaking_point.flows.bp_flow import BPFlow
 
 
 class BPResultsFlow(BPFlow):
-    def __init__(self, session_manager, logger):
-        super(BPResultsFlow, self).__init__(session_manager, logger)
 
     def get_results(self, test_id):
         with self._session_context_manager as rest_service:

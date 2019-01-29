@@ -1,11 +1,9 @@
-from cloudshell.tg.breaking_point.actions.test_network_actions import TestNetworkActions
-from cloudshell.tg.breaking_point.flows.exceptions import BPFlowException
 import re
-from xml.etree import ElementTree
+
 from cloudshell.tg.breaking_point.actions.port_reservation_actions import PortReservationActions
-from cloudshell.tg.breaking_point.actions.test_configuration_actions import TestConfigurationActions
-from cloudshell.tg.breaking_point.actions.test_execution_actions import TestExecutionActions
+from cloudshell.tg.breaking_point.actions.test_network_actions import TestNetworkActions
 from cloudshell.tg.breaking_point.flows.bp_flow import BPFlow
+from cloudshell.tg.breaking_point.flows.exceptions import BPFlowException
 
 
 class BPPortReservationFlow(BPFlow):

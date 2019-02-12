@@ -13,42 +13,6 @@ class TestRestSessionContextManager(TestCase):
         self.__logger = Mock()
         self._instance = RestSessionContextManager(self.__hostname, self.__username, self.__password, self.__logger)
 
-    def test_hostname_getter(self):
-        self.assertEqual(self._instance.hostname, self.__hostname)
-
-    @patch('cloudshell.tg.breaking_point.rest_api.rest_session_manager.RestSessionContextManager._destroy_session')
-    def test_hostname_setter(self, destroy_session):
-        self._instance.hostname = self.__hostname
-        destroy_session.assert_not_called()
-        new_hostname = Mock()
-        self._instance.hostname = new_hostname
-        self.assertEqual(self._instance.hostname, new_hostname)
-        destroy_session.assert_called_once()
-
-    def test_username_getter(self):
-        self.assertEqual(self._instance.username, self.__username)
-
-    @patch('cloudshell.tg.breaking_point.rest_api.rest_session_manager.RestSessionContextManager._destroy_session')
-    def test_hostname_setter(self, destroy_session):
-        self._instance.username = self.__username
-        destroy_session.assert_not_called()
-        new_username = Mock()
-        self._instance.username = new_username
-        self.assertEqual(self._instance.username, new_username)
-        destroy_session.assert_called_once()
-
-    def test_password_getter(self):
-        self.assertEqual(self._instance.password, self.__password)
-
-    @patch('cloudshell.tg.breaking_point.rest_api.rest_session_manager.RestSessionContextManager._destroy_session')
-    def test_hostname_setter(self, destroy_session):
-        self._instance.password = self.__password
-        destroy_session.assert_not_called()
-        new_password = Mock()
-        self._instance.password = new_password
-        self.assertEqual(self._instance.password, new_password)
-        destroy_session.assert_called_once()
-
     def test_logger_getter(self):
         self.assertEqual(self._instance.logger, self.__logger)
 

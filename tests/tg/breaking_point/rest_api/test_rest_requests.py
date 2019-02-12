@@ -1,4 +1,4 @@
-from unittest2 import TestCase
+from unittest import TestCase
 
 from cloudshell.tg.breaking_point.rest_api.rest_requests import RestRequests
 

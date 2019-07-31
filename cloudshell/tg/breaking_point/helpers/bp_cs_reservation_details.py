@@ -7,9 +7,12 @@ from cloudshell.tg.breaking_point.bp_exception import BPException
 
 
 class BPCSReservationDetails(object):
-    PORT_FAMILY = ['Port', 'Virtual Port', 'CS_TrafficGeneratorPort', 'CS_VirtualTrafficGeneratorPort']
+    PORT_FAMILY = ['Port', 'Virtual Port', 'Breaking Point Virtual Port', 'CS_TrafficGeneratorPort',
+                   'CS_VirtualTrafficGeneratorPort']
+    STATIC_VM_PORT = {"family_name": "CS_Port", "model_name": "BP vBlade.GenericVPort"}
     CHASSIS_FAMILY = ['Traffic Generator Chassis', 'Virtual Traffic Generator Chassis', 'CS_TrafficGeneratorChassis',
                       'CS_VirtualTrafficGeneratorChassis']
+    STATIC_VM_CHASSIS = {"family_name": "CS_GenericAppFamily", "model_name": "BP vChassis"}
     PORT_ATTRIBUTE = 'Logical Name'
     USERNAME_ATTRIBUTE = 'User'
     PASSWORD_ATTRIBUTE = 'Password'
@@ -48,7 +51,9 @@ class BPCSReservationDetails(object):
     def _find_chassis_resource(self):
         chassis_resource = None
         for resource in self._get_reservation_details().ReservationDescription.Resources:
-            if resource.ResourceFamilyName in self.CHASSIS_FAMILY:
+            if (resource.ResourceFamilyName in self.CHASSIS_FAMILY or
+                            resource.ResourceFamilyName == self.STATIC_VM_CHASSIS["family_name"] and
+                            resource.ResourceModelName == self.STATIC_VM_CHASSIS["model_name"]):
                 chassis_resource = resource
         if not chassis_resource:
             raise BPException(self.__class__.__name__,
@@ -81,14 +86,26 @@ class BPCSReservationDetails(object):
     def get_chassis_ports(self):
         self.logger.debug('Api: {}'.format(self.api))
         reserved_ports = {}
-        port_pattern = r'{}/M(?P<module>\d+)/P(?P<port>\d+)'.format(self.get_chassis_address())
+        port_pattern = r'{}[\\/]M(?P<module>\d+)/P(?P<port>\d+)'.format(self.get_chassis_address())
         for resource in self._get_reservation_details().ReservationDescription.Resources:
-            if resource.ResourceFamilyName in self.PORT_FAMILY:
+            if (resource.ResourceFamilyName in self.PORT_FAMILY or
+                            resource.ResourceFamilyName == self.STATIC_VM_PORT["family_name"] and
+                            resource.ResourceModelName == self.STATIC_VM_PORT["model_name"]):
                 result = re.search(port_pattern, resource.FullAddress)
                 if result:
                     logical_name = self._get_attribute_value(resource.Name, self.PORT_ATTRIBUTE)
                     if logical_name:
                         reserved_ports[logical_name.lower()] = (result.group('module'), result.group('port'))
+
+            if resource.ResourceFamilyName == self.STATIC_VM_PORT["family_name"] and \
+                            resource.ResourceModelName == self.STATIC_VM_PORT["model_name"]:
+                result = re.search(port_pattern, resource.FullAddress)
+                if result:
+                    logical_name = self._get_attribute_value(resource.Name, self.PORT_ATTRIBUTE)
+                    # 'BP vBlade.GenericVPort.Logical Name'
+                    if logical_name:
+                        reserved_ports[logical_name.lower()] = (result.group('module'), result.group('port'))
+
         self.logger.debug('Chassis ports {}'.format(reserved_ports))
         return reserved_ports
 
